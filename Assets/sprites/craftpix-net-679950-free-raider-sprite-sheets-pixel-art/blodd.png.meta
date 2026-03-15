@@ -1,0 +1,326 @@
+fileFormatVersion: 2
+guid: 71cad8992bf4e8545bc882cae2bba21f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4846067300663306244
+    second: blodd_0
+  - first:
+      213: -4826028065434576381
+    second: blodd_1
+  - first:
+      213: 1677102109943760502
+    second: blodd_2
+  - first:
+      213: -4651579126159360615
+    second: blodd_3
+  - first:
+      213: 774421313969412047
+    second: blodd_4
+  - first:
+      213: 6665787812800355984
+    second: blodd_5
+  - first:
+      213: 31128531815715677
+    second: blodd_6
+  - first:
+      213: -6021432478561559835
+    second: blodd_7
+  - first:
+      213: -3539026142436454066
+    second: blodd_8
+  - first:
+      213: 200872960353665075
+    second: blodd_9
+  - first:
+      213: -1279560881003199100
+    second: blodd_10
+  - first:
+      213: 6724811978929529287
+    second: blodd_11
+  - first:
+      213: -6368657964167421682
+    second: blodd_12
+  - first:
+      213: 1474630616456255224
+    second: blodd_13
+  - first:
+      213: -5229985001376384792
+    second: blodd_14
+  - first:
+      213: 4271609205033701514
+    second: blodd_15
+  - first:
+      213: -1970668745874302461
+    second: blodd_16
+  - first:
+      213: 7661856853459970165
+    second: blodd_17
+  - first:
+      213: 5031199305089624570
+    second: blodd_18
+  - first:
+      213: 2127202673202375976
+    second: blodd_19
+  - first:
+      213: 2278739923399947194
+    second: blodd_20
+  - first:
+      213: -8637181555964126931
+    second: blodd_21
+  - first:
+      213: -2556305391062612407
+    second: blodd_22
+  - first:
+      213: 438587229816011113
+    second: blodd_23
+  - first:
+      213: 8352675558995318724
+    second: blodd_24
+  - first:
+      213: 7702460045111761048
+    second: blodd_25
+  - first:
+      213: 5942724056830826490
+    second: blodd_26
+  - first:
+      213: 418555625836420923
+    second: blodd_27
+  - first:
+      213: -3844562331970487365
+    second: blodd_28
+  - first:
+      213: -9068151065623311640
+    second: blodd_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 2000
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: blodd_0
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 235
+        width: 895
+        height: 962
+      alignment: 9
+      pivot: {x: 0.25, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4082cadc880b04340800000000000000
+      internalID: 4846067300663306244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blodd_1
+      rect:
+        serializedVersion: 2
+        x: 953
+        y: 354
+        width: 603
+        height: 644
+      alignment: 9
+      pivot: {x: 0.25, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30ad4bb3b01860db0800000000000000
+      internalID: -4826028065434576381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blodd_2
+      rect:
+        serializedVersion: 2
+        x: 1583
+        y: 352
+        width: 534
+        height: 523
+      alignment: 9
+      pivot: {x: 0.25, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 676814bbb73464710800000000000000
+      internalID: 1677102109943760502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blodd_3
+      rect:
+        serializedVersion: 2
+        x: 2169
+        y: 365
+        width: 612
+        height: 313
+      alignment: 9
+      pivot: {x: 0.25, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99d36ac0e65427fb0800000000000000
+      internalID: -4651579126159360615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7dccec950c9d7ad44a0fe0a7b6c73556
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      blodd_0: 4846067300663306244
+      blodd_1: -4826028065434576381
+      blodd_10: -1279560881003199100
+      blodd_11: 6724811978929529287
+      blodd_12: -6368657964167421682
+      blodd_13: 1474630616456255224
+      blodd_14: -5229985001376384792
+      blodd_15: 4271609205033701514
+      blodd_16: -1970668745874302461
+      blodd_17: 7661856853459970165
+      blodd_18: 5031199305089624570
+      blodd_19: 2127202673202375976
+      blodd_2: 1677102109943760502
+      blodd_20: 2278739923399947194
+      blodd_21: -8637181555964126931
+      blodd_22: -2556305391062612407
+      blodd_23: 438587229816011113
+      blodd_24: 8352675558995318724
+      blodd_25: 7702460045111761048
+      blodd_26: 5942724056830826490
+      blodd_27: 418555625836420923
+      blodd_28: -3844562331970487365
+      blodd_29: -9068151065623311640
+      blodd_3: -4651579126159360615
+      blodd_30: -1135316923
+      blodd_4: 774421313969412047
+      blodd_5: 6665787812800355984
+      blodd_6: 31128531815715677
+      blodd_7: -6021432478561559835
+      blodd_8: -3539026142436454066
+      blodd_9: 200872960353665075
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
