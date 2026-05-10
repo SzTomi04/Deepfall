@@ -1,3 +1,48 @@
+# Unity .gitignore - ignore build artifacts, temporary files, and user/editor settings
+# Generated/compiled files
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+My project_BurstDebugInformation_DoNotShip/
+
+# Visual Studio / Rider / IDE files
+.vscode/
+.vs/
+*.suo
+*.user
+*.userprefs
+*.csproj
+*.unityproj
+*.sln
+*.sdf
+*.db
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Packed/Exported files
+*.apk
+*.aab
+*.unitypackage
+
+# Memory/Cache
+MemoryCaptures/
+ScriptAssemblies/
+
+# Ignore local settings
+UserSettings/
+
+# Exclude asset store tools
+Assets/AssetStoreTools*
+
+# Ignore JetBrains Rider caches
+.idea/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
