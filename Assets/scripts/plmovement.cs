@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private BoxCollider2D boxCollider;
     private float wallJumpCooldown; // Ez a változó fogja kezelni a falugrás utáni rövid időt, amikor nem lehet újra ugran
+    private bool movementEnabled = true;
     
      
 
@@ -60,7 +61,15 @@ public class PlayerMovement : MonoBehaviour
         //wall jump cooldown kezelése
         if (wallJumpCooldown < 0)
         {
-            body.linearVelocity = new Vector2(moveInput.x * speed, body.linearVelocity.y);
+            if (movementEnabled)
+            {
+                body.linearVelocity = new Vector2(moveInput.x * speed, body.linearVelocity.y);
+            }
+            else
+            {
+                // keep vertical velocity but stop horizontal movement
+                body.linearVelocity = new Vector2(0f, body.linearVelocity.y);
+            }
 
             if(onWall() && !isGrounded())
             {
@@ -118,6 +127,19 @@ public class PlayerMovement : MonoBehaviour
     {
         return horizontalInput == 0 && isGrounded();
         
+    }
+
+    public void DisableMovementForSeconds(float seconds)
+    {
+        if (movementEnabled)
+            StartCoroutine(DisableMovementRoutine(seconds));
+    }
+
+    private System.Collections.IEnumerator DisableMovementRoutine(float seconds)
+    {
+        movementEnabled = false;
+        yield return new WaitForSeconds(seconds);
+        movementEnabled = true;
     }
     private bool isGrounded()
 {

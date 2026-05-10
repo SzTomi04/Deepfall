@@ -24,11 +24,21 @@ public class shot : MonoBehaviour
     float moveDistance = speed * Time.deltaTime;
     Vector2 moveDirection = transform.right * direction;
 
-    // A lézer mindent néz, ami a whatIsSolid-ban benne van
-    RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, moveDirection, moveDistance + 0.1f, whatIsSolid);
+    // Ha a LayerMask nincs beállítva, akkor alapból minden réteget nézzen
+    LayerMask maskToUse = whatIsSolid.value == 0 ? Physics2D.DefaultRaycastLayers : whatIsSolid;
+    RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, moveDirection, moveDistance + 0.1f, maskToUse);
+
+    // draw the ray so we can see it in the Scene view
+    Debug.DrawRay(transform.position, moveDirection * (moveDistance + 0.1f), Color.red);
+
+    if (direction == 0f)
+    {
+        Debug.LogWarning("shot: direction is 0 — SetDirection may not have been called on " + gameObject.name);
+    }
 
     if (hitInfo.collider != null)
     {
+        Debug.Log("shot: raycast hit " + hitInfo.collider.name + " (layer: " + LayerMask.LayerToName(hitInfo.collider.gameObject.layer) + ")");
         ProcessHit(hitInfo);
     }
     else
@@ -48,18 +58,37 @@ private void ProcessHit(RaycastHit2D hitInfo)
     // Pontosan a falra/testre helyezzük
     transform.position = hitInfo.point;
 
-    HealthBar target = hitInfo.collider.GetComponent<HealthBar>();
+    HealthBar playerHealth = hitInfo.collider.GetComponent<HealthBar>();
+    if (playerHealth == null)
+    {
+        playerHealth = hitInfo.collider.GetComponentInParent<HealthBar>();
+    }
 
-    if (target != null)
+    AIEnemy aiEnemy = hitInfo.collider.GetComponent<AIEnemy>();
+    if (aiEnemy == null)
+    {
+        aiEnemy = hitInfo.collider.GetComponentInParent<AIEnemy>();
+    }
+
+    if (playerHealth != null)
     {
         // PLAYER TALÁLAT
-        target.TakeDamage(damageAmount);
+        Debug.Log("Shot hit Player!");
+        playerHealth.TakeDamage(damageAmount);
         transform.SetParent(hitInfo.collider.transform); // Rátapad a futó játékosra
         Explodeonplayer();
+    }
+    else if (aiEnemy != null)
+    {
+        // ENEMY TALÁLAT
+        Debug.Log("Shot hit Enemy: " + aiEnemy.gameObject.name);
+        aiEnemy.TakeDamage(damageAmount);
+        Explode();
     }
     else
     {
         // FAL TALÁLAT
+        Debug.Log("Shot hit Wall/Other: " + hitInfo.collider.name);
         Explode();
     }
 }

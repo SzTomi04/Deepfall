@@ -292,7 +292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 174041474}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: firepoint
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -479,6 +479,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1070,6 +1074,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1153,6 +1161,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1373,6 +1385,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1584,6 +1600,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1657,6 +1677,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1730,6 +1754,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1882,6 +1910,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2082,6 +2114,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2158,11 +2194,11 @@ GameObject:
   - component: {fileID: 1732976598}
   - component: {fileID: 1732976606}
   - component: {fileID: 1732976605}
-  - component: {fileID: 1732976602}
   - component: {fileID: 1732976600}
-  - component: {fileID: 1732976607}
   - component: {fileID: 1732976608}
-  m_Layer: 8
+  - component: {fileID: 1732976609}
+  - component: {fileID: 1732976610}
+  m_Layer: 10
   m_Name: player (4)
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2201,28 +2237,6 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 20
   healthBarUI: {fileID: 1587829190}
---- !u!95 &1732976602
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732976597}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dc009eec4f8eb744dafbc4c445c90144, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!50 &1732976605
 Rigidbody2D:
   serializedVersion: 5
@@ -2309,21 +2323,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &1732976607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732976597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30466745df721534e9d51eacfd9f2d62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AutoWalker
-  moveSpeed: 1
-  isWalking: 1
-  turnInterval: 2
 --- !u!61 &1732976608
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2370,6 +2369,49 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.27202892, y: 0.66019624}
   m_EdgeRadius: 0
+--- !u!95 &1732976609
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732976597}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0689f72f6f5db124ea9fbcba4b50850c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1732976610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732976597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 023e330f9d1de9041bb9313ee5f10665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AIEnemy
+  speed: 2
+  leftPoint: {fileID: 0}
+  rightPoint: {fileID: 0}
+  projectilePrefab: {fileID: 4589110178367227371}
+  firePoint: {fileID: 0}
+  shootInterval: 1.5
+  detectionRange: 8
+  maxHealth: 50
+  currentHealth: 0
 --- !u!1 &1822855062 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8898601060859650405, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
@@ -2782,6 +2824,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 231041448}
     m_Modifications:
+    - target: {fileID: 856137950059051751, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
+      propertyPath: whatIsSolid.m_Bits
+      value: 1472
+      objectReference: {fileID: 0}
     - target: {fileID: 2245569257644079326, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
       propertyPath: m_Sprite
       value: 
