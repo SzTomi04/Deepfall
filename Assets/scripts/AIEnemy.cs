@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AIEnemy : MonoBehaviour
 {
@@ -19,11 +21,14 @@ public class AIEnemy : MonoBehaviour
     public int maxHealth = 50;
     public int currentHealth;
 
+    [Header("Scene")]
+    [SerializeField] private string nextSceneName = "lvl2";
+
     private Transform player;
     private bool hasBeenHit = false;
     private Animator anim;
-    private bool isPatrolling = true;
     private Rigidbody2D rb;
+    private bool warnedMissingProjectile;
 
     private void Start()
     {
@@ -46,11 +51,20 @@ public class AIEnemy : MonoBehaviour
             rb = gameObject.AddComponent<Rigidbody2D>();
             Debug.Log("Added Rigidbody2D to " + name);
         }
-        // Use Dynamic body so gravity applies; keep rotation frozen
+        // Use Dynamic body so gravity applies; keep rotation frozen and X locked.
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.gravityScale = 1f;
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+
+        if (firePoint == null)
+        {
+            GameObject firePointObject = new GameObject(name + "_firePoint");
+            firePointObject.transform.SetParent(transform);
+            firePointObject.transform.localPosition = new Vector3(0.5f, 0.2f, 0f);
+            firePoint = firePointObject.transform;
+        }
 
         GameObject p = GameObject.FindWithTag("Player");
         if (p != null)
@@ -65,15 +79,23 @@ public class AIEnemy : MonoBehaviour
             rightPoint.position = transform.position + Vector3.right * 3f;
         }
 
-        SnapToGround(collider);
     }
 
     private void Update()
     {
         shootTimer += Time.deltaTime;
 
-        // Only shoot back if AI has been hit and player is in range
-        if (hasBeenHit && player != null && Vector2.Distance(transform.position, player.position) <= detectionRange)
+        if (player == null)
+        {
+            GameObject p = GameObject.FindWithTag("Player");
+            if (p != null)
+            {
+                player = p.transform;
+            }
+        }
+
+        // Once hit, keep trying to retaliate while the player exists.
+        if (hasBeenHit && player != null)
         {
             TryShootAtPlayer();
         }
@@ -81,48 +103,6 @@ public class AIEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Patrol();
-    }
-
-    private void Patrol()
-    {
-        if (!isPatrolling) // do nothing if patrolling disabled
-        {
-            if (anim != null)
-                anim.SetBool("isWalking", false);
-            return;
-        }
-
-        // Play walk animation
-        if (anim != null)
-        {
-            anim.SetBool("isWalking", true);
-        }
-
-        Transform target = movingRight ? rightPoint : leftPoint;
-        float dir = movingRight ? 1f : -1f;
-
-        if (rb != null)
-        {
-            // preserve vertical velocity (gravity) but set horizontal velocity
-            Vector2 vel = rb.linearVelocity;
-            vel.x = dir * speed;
-            rb.linearVelocity = vel;
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        }
-
-        // check horizontal proximity to flip
-        float dist = Mathf.Abs((rb != null ? rb.position.x : transform.position.x) - target.position.x);
-        if (dist < 0.05f)
-        {
-            movingRight = !movingRight;
-            Vector3 s = transform.localScale;
-            s.x = Mathf.Sign(movingRight ? 1 : -1) * Mathf.Abs(s.x);
-            transform.localScale = s;
-        }
     }
 
     private void TryShootAtPlayer()
@@ -132,13 +112,23 @@ public class AIEnemy : MonoBehaviour
 
         shootTimer = 0f;
 
-        if (projectilePrefab == null || firePoint == null)
+        if (projectilePrefab == null || firePoint == null || player == null)
+        {
+            if (!warnedMissingProjectile && projectilePrefab == null)
+            {
+                warnedMissingProjectile = true;
+                Debug.LogWarning(name + " has no projectilePrefab assigned.");
+            }
             return;
+        }
 
         Vector2 dir = (player.position - firePoint.position);
         float sign = Mathf.Sign(dir.x);
 
         GameObject proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        if (proj == null)
+            return;
+
         Debug.Log(name + " spawned projectile " + (proj != null ? proj.name : "null") + " with direction " + sign);
         var shotComp = proj.GetComponent<shot>();
         var box = proj.GetComponent<BoxCollider2D>();
@@ -146,7 +136,7 @@ public class AIEnemy : MonoBehaviour
         Debug.Log("projectile components: shot=" + (shotComp!=null) + " box=" + (box!=null) + " rb=" + (rbody!=null));
         if (shotComp != null)
         {
-            shotComp.SetDirection(sign);
+            shotComp.SetDirection(sign, transform);
         }
         else
         {
@@ -170,33 +160,74 @@ public class AIEnemy : MonoBehaviour
         }
 
         // Stop horizontal movement in place when hit
-        isPatrolling = false;
         if (rb != null)
         {
-            // stop horizontal motion and lock X position so AI stays in place
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
-
-        // Now start shooting back at player
-        shootTimer = shootInterval; // Reset to shoot immediately
 
         if (currentHealth <= 0)
         {
             Die();
         }
+        else
+        {
+            // Csak akkor lő vissza, ha túlélte a találatot
+            shootTimer = shootInterval; 
+            TryShootAtPlayer();
+        }
     }
 
     private void Die()
     {
+        // Megállítjuk a lövöldözést és a hit logikát
+        hasBeenHit = false;
+        
         if (anim != null)
         {
             anim.SetTrigger("die");
         }
-        isPatrolling = false;
-        Destroy(gameObject, 1f);
+
+        // Kikapcsoljuk a fizikai jelenlétét, hogy a lövedékek ne találják el többet
+        BoxCollider2D col = GetComponent<BoxCollider2D>();
+        if (col != null) col.enabled = false;
+
+        // Megállítjuk a fizikát, hogy ne essen le a pályáról a halál animáció alatt
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        // Kikapcsoljuk az Update futását
+        this.enabled = false;
+
+        StartCoroutine(LoadNextSceneAfterDelay(1f));
     }
 
+    private IEnumerator LoadNextSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (string.IsNullOrWhiteSpace(nextSceneName))
+        {
+            Debug.LogWarning(name + " has no next scene name assigned.");
+            yield break;
+        }
+
+        Debug.Log($"Jelenetváltás megkísérlése: '{nextSceneName}'...");
+
+        if (Application.CanStreamedLevelBeLoaded(nextSceneName))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
+        else
+        {
+            Debug.LogError($"HIBA: A(z) '{nextSceneName}' jelenet nincs hozzáadva a Build Settings-hez!");
+            // Ha hiba van, legalább adjuk vissza a vezérlést vagy tegyünk valamit, 
+            // de a LoadScene hiba megállítja a folyamatot.
+        }
+    }
     private void OnDrawGizmosSelected()
     {
         // draw patrol points and collider bounds for debugging in Scene view

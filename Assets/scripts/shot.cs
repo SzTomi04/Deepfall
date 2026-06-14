@@ -9,12 +9,23 @@ public class shot : MonoBehaviour
     private bool hit;
     private Animator anim;
     private float direction;
+    private Transform ownerRoot;
     private float lifetime; // Mennyi idő után tűnik el a lövedék, ha nem talál el semmit
     public int damageAmount = 20;
     private void Awake()
     {
         boxCollider = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+
+        if (boxCollider == null)
+        {
+            Debug.LogWarning("shot prefab is missing a BoxCollider2D on " + gameObject.name);
+        }
+
+        if (anim == null)
+        {
+            Debug.LogWarning("shot prefab is missing an Animator on " + gameObject.name);
+        }
     }
     
     void Update()
@@ -24,8 +35,9 @@ public class shot : MonoBehaviour
     float moveDistance = speed * Time.deltaTime;
     Vector2 moveDirection = transform.right * direction;
 
-    // Ha a LayerMask nincs beállítva, akkor alapból minden réteget nézzen
+    // Always allow player/enemy layers to be detected, even if the inspector mask is incomplete.
     LayerMask maskToUse = whatIsSolid.value == 0 ? Physics2D.DefaultRaycastLayers : whatIsSolid;
+    maskToUse |= LayerMask.GetMask("Player", "Enemy", "Robot");
     RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, moveDirection, moveDistance + 0.1f, maskToUse);
 
     // draw the ray so we can see it in the Scene view
@@ -38,6 +50,14 @@ public class shot : MonoBehaviour
 
     if (hitInfo.collider != null)
     {
+        if (ownerRoot != null && hitInfo.collider.transform.IsChildOf(ownerRoot))
+        {
+            transform.Translate(moveDistance * direction, 0, 0);
+            lifetime += Time.deltaTime;
+            if (lifetime >= 5f) gameObject.SetActive(false);
+            return;
+        }
+
         Debug.Log("shot: raycast hit " + hitInfo.collider.name + " (layer: " + LayerMask.LayerToName(hitInfo.collider.gameObject.layer) + ")");
         ProcessHit(hitInfo);
     }
@@ -98,7 +118,10 @@ private void ProcessHit(RaycastHit2D hitInfo)
     private void Explode()
 {
     hit = true;
-    boxCollider.enabled = false;
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = false;
+        }
 
     // 1. Fizika leállítása (hogy ne fúródjon bele tovább a falba)
     Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -109,7 +132,10 @@ private void ProcessHit(RaycastHit2D hitInfo)
     }
 
     // 2. Animáció elindítása
-    anim.SetTrigger("explode");
+        if (anim != null)
+        {
+            anim.SetTrigger("explode");
+        }
 
     // 3. Irány beállítása (ha a Sprite-odnak szüksége van a tükrözésre a falnál)
     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * -direction, transform.localScale.y, transform.localScale.z);
@@ -117,7 +143,10 @@ private void ProcessHit(RaycastHit2D hitInfo)
      private void Explodeonplayer()
 {
     hit = true;
-    boxCollider.enabled = false;
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = false;
+        }
 
     // 1. Fizika leállítása (hogy ne fúródjon bele tovább a falba)
     Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -128,7 +157,10 @@ private void ProcessHit(RaycastHit2D hitInfo)
     }
 
     // 2. Animáció elindítása
-    anim.SetTrigger("explodeonplayer");
+        if (anim != null)
+        {
+            anim.SetTrigger("explodeonplayer");
+        }
 
     // 3. Irány beállítása (ha a Sprite-odnak szüksége van a tükrözésre a falnál)
     
@@ -138,9 +170,15 @@ private void ProcessHit(RaycastHit2D hitInfo)
 
     public void SetDirection(float _direction)
     {
+        SetDirection(_direction, null);
+    }
+
+    public void SetDirection(float _direction, Transform _ownerRoot)
+    {
     transform.SetParent(null); // Leválasztjuk a lövedéket, hogy ne örökölje a játékos mozgását
     lifetime = 0; // Újraindítjuk az élettartamot minden új lövésnél
     direction = _direction;
+    ownerRoot = _ownerRoot;
     gameObject.SetActive(true);
     hit = false;
     

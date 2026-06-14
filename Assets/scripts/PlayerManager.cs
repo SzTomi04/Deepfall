@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     {
         public int roomID;
         public string roomName;
+        public string sceneName; // Új mező a jelenet nevének
         [TextArea(3, 8)] public string description;
         public bool isShelter;
     }
@@ -62,12 +64,27 @@ public class PlayerManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
     private void Start()
     {
         if (autoInitializeWorld)
         {
             InitWorld();
         }
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(PlacePlayerAfterSceneLoad());
     }
 
     private void Update()
@@ -214,7 +231,86 @@ public class PlayerManager : MonoBehaviour
         Quaternion spawnRotation = spawnTransform != null ? spawnTransform.rotation : Quaternion.identity;
 
         currentPlayer = Instantiate(playerPrefab, spawnPosition, spawnRotation);
+        DontDestroyOnLoad(currentPlayer);
         return currentPlayer;
+    }
+
+    private System.Collections.IEnumerator PlacePlayerAfterSceneLoad()
+    {
+        // Várunk egy rövid ideig, hogy a jelenet összes objektuma (pl. Player Spawn) biztosan megszülessen
+        yield return new WaitForEndOfFrame();
+
+        // Megnézzük, van-e a jelenetben egy játékos objektum (amit kézzel raktál le)
+        GameObject scenePlayer = GameObject.FindWithTag("Player");
+
+        // Ha van a jelenetben játékos, és az nem az, akit eddig követtünk
+        if (scenePlayer != null && scenePlayer != currentPlayer)
+        {
+            if (currentPlayer != null)
+            {
+                // Ha volt egy régi játékosunk (aki átjött az előző szintről), 
+                // töröljük, mert az új jelenet saját játékosát akarjuk használni.
+                Destroy(currentPlayer);
+            }
+            currentPlayer = scenePlayer;
+            DontDestroyOnLoad(currentPlayer);
+            Debug.Log("Új játékos detektálva a jelenetben, ezt használjuk tovább.");
+        }
+
+        GameObject player = EnsurePlayerExists();
+        if (player == null)
+        {
+            yield break;
+        }
+
+        // Megpróbáljuk beállítani a currentRoomID-t a jelenet neve alapján
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        RoomDefinition currentRoom = roomDefinitions.Find(r => r.sceneName == currentSceneName);
+        if (currentRoom != null)
+        {
+            currentRoomID = currentRoom.roomID;
+        }
+
+        // 1. Keresünk egy "Player Spawn" nevű objektumot
+        GameObject spawnObject = GameObject.Find("Player Spawn");
+
+        // 2. Ha név alapján nincs, keressük típus alapján
+        if (spawnObject == null)
+        {
+            ScenePlayerSpawn sps = GameObject.FindAnyObjectByType<ScenePlayerSpawn>();
+            if (sps != null) spawnObject = sps.gameObject;
+        }
+
+        // Csak akkor teleportálunk, ha találtunk spawn pontot. 
+        // Ha nincs spawn pont, feltételezzük, hogy a játékos jó helyen van (kézi elhelyezés).
+        if (spawnObject != null && player != null && scenePlayer == null)
+        {
+            // Teleportálás előtt állítsuk meg a fizikai mozgást teljesen
+            Rigidbody2D body = player.GetComponent<Rigidbody2D>();
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+                body.angularVelocity = 0f;
+                body.Sleep(); // Elaltatjuk a fizikát a teleport idejére
+            }
+
+            // Pozíció és rotáció beállítása
+            Vector3 spawnPos = spawnObject.transform.position;
+            spawnPos.z = 0; // Biztosítjuk, hogy 2D-ben maradjon
+            player.transform.position = spawnPos;
+            
+            if (body != null) body.WakeUp(); // Felébresztjük a fizikát
+            
+            Debug.Log($"Sikeres teleport: {player.name} -> {spawnObject.name} a(z) {currentSceneName} jelenetben.");
+        }
+        else if (scenePlayer != null)
+        {
+            Debug.Log("Kézzel elhelyezett játékos használata, teleportálás kihagyva.");
+        }
+        else if (spawnObject == null)
+        {
+            Debug.Log("Nincs 'Player Spawn' pont és kézi játékos sem, a karakter marad az aktuális helyén.");
+        }
     }
 
     public void MovePlayer(int roomID)
@@ -391,6 +487,14 @@ public class PlayerManager : MonoBehaviour
     {
         if (currentPlayer != null)
         {
+            return currentPlayer;
+        }
+
+        // Megpróbáljuk megkeresni a színtéren, mielőtt példányosítanánk
+        GameObject scenePlayer = GameObject.FindWithTag("Player");
+        if (scenePlayer != null)
+        {
+            currentPlayer = scenePlayer;
             return currentPlayer;
         }
 

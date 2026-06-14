@@ -38,7 +38,7 @@ public class plattack : MonoBehaviour
         
         // Lövedék pozicionálása és indítása
         shots[FindShotIndex()].transform.position = firePoint.position;
-        shots[FindShotIndex()].GetComponent<shot>().SetDirection(Mathf.Sign(transform.localScale.x));
+        shots[FindShotIndex()].GetComponent<shot>().SetDirection(Mathf.Sign(transform.localScale.x), transform);
     }
     private int FindShotIndex()
     {
