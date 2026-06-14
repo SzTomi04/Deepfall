@@ -2194,12 +2194,11 @@ GameObject:
   - component: {fileID: 1732976598}
   - component: {fileID: 1732976606}
   - component: {fileID: 1732976605}
-  - component: {fileID: 1732976600}
   - component: {fileID: 1732976608}
   - component: {fileID: 1732976609}
   - component: {fileID: 1732976610}
   m_Layer: 10
-  m_Name: player (4)
+  m_Name: enemy
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2221,22 +2220,6 @@ Transform:
   - {fileID: 174041474}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1732976600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732976597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86958901f733cbd47849f6c6716f2cde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthBar
-  slider: {fileID: 114330410}
-  maxHealth: 100
-  currentHealth: 20
-  healthBarUI: {fileID: 1587829190}
 --- !u!50 &1732976605
 Rigidbody2D:
   serializedVersion: 5
@@ -2407,11 +2390,12 @@ MonoBehaviour:
   leftPoint: {fileID: 0}
   rightPoint: {fileID: 0}
   projectilePrefab: {fileID: 4589110178367227371}
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 174041474}
   shootInterval: 1.5
   detectionRange: 8
-  maxHealth: 50
+  maxHealth: 5
   currentHealth: 0
+  nextSceneName: lvl2
 --- !u!1 &1822855062 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8898601060859650405, guid: 6a9f78b65a685fd458afb323b3a82f77, type: 3}
