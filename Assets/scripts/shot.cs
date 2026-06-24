@@ -112,7 +112,7 @@ public class shot : MonoBehaviour
                 aiEnemy.TakeDamage(damageAmount, transform.position); 
             }
             
-            Explode();
+            Explodeonplayer();
         }
         else
         {

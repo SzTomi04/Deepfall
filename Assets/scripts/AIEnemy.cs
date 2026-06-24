@@ -25,6 +25,8 @@ public class AIEnemy : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb;
     private bool warnedMissingProjectile;
+    
+    private bool isDead = false;
 
     private void Start()
     {
@@ -72,6 +74,8 @@ public class AIEnemy : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return;
+
         shootTimer += Time.deltaTime;
 
         if (player == null)
@@ -85,13 +89,10 @@ public class AIEnemy : MonoBehaviour
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-            // KIZÁRÓLAG akkor csinál bármit, ha a játékos elég közel van
             if (distanceToPlayer <= detectionRange)
             {
-                // 1. LÉPÉS: FOLYAMATOS FORGÁS A JÁTÉKOS FELÉ
                 float directionX = player.position.x - transform.position.x;
                 
-                // Csak akkor próbálunk megfordulni, ha nem pont egy pixelnyire vannak egymáson
                 if (Mathf.Abs(directionX) > 0.1f)
                 {
                     float sign = Mathf.Sign(directionX);
@@ -104,7 +105,6 @@ public class AIEnemy : MonoBehaviour
                     }
                 }
 
-                // 2. LÉPÉS: CÉLZÁS ÉS LÖVÉS
                 TryShootAtPlayer();
             }
         }
@@ -112,31 +112,25 @@ public class AIEnemy : MonoBehaviour
 
     private void TryShootAtPlayer()
     {
+        if (isDead) return;
+
         if (shootTimer < shootInterval)
             return;
 
         shootTimer = 0f;
 
-        if (projectilePrefab == null || firePoint == null)
-        {
-            if (!warnedMissingProjectile && projectilePrefab == null)
-            {
-                warnedMissingProjectile = true;
-                Debug.LogWarning(name + " has no projectilePrefab assigned.");
-            }
+        if (projectilePrefab == null || firePoint == null || player == null)
             return;
-        }
-
-        if (player == null) return;
-
-        Vector2 exactAimDirection = (player.position - firePoint.position).normalized;
-        float sign = Mathf.Sign(player.position.x - transform.position.x);
 
         if (anim != null)
         {
             anim.SetTrigger("attack"); 
         }
 
+        // 1. Kiszámoljuk a pontos célzási irányt a játékos felé
+        Vector2 exactAimDirection = (player.position - firePoint.position).normalized;
+
+        // 2. Kiszámoljuk a forgatási szöget és elforgatjuk a golyót
         float angle = Mathf.Atan2(exactAimDirection.y, exactAimDirection.x) * Mathf.Rad2Deg;
         Quaternion bulletRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
 
@@ -154,7 +148,9 @@ public class AIEnemy : MonoBehaviour
         
         if (shotComp != null)
         {
-            shotComp.SetDirection(sign, transform);
+            // A JAVÍTÁS ITT VAN: Mivel a golyót már ráirányítottuk a játékosra, 
+            // a shot szkriptnek mindig 1-est (előre) adunk át, hogy abba az irányba induljon meg!
+            shotComp.SetDirection(1f, transform);
         }
     }
 
@@ -169,9 +165,10 @@ public class AIEnemy : MonoBehaviour
         ProcessDamage(damage, damageSourcePosition);
     }
 
-    // A sebződés most már csak a sebződéssel (és a halállal) foglalkozik, semmi mással!
     private void ProcessDamage(int damage, Vector3 sourcePosition)
     {
+        if (isDead) return;
+
         currentHealth -= damage;
         Debug.Log(name + " HIT for " + damage + " damage! Health: " + currentHealth + "/" + maxHealth);
 
@@ -194,6 +191,8 @@ public class AIEnemy : MonoBehaviour
 
     private void Die()
     {
+        isDead = true;
+
         if (anim != null)
         {
             anim.SetTrigger("die");

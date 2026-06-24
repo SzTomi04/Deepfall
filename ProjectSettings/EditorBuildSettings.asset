@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/levels/lvl3.unity
     guid: e9ea6260952257b44a80522d6df7e359
+  - enabled: 1
+    path: Assets/levels/end.unity
+    guid: 187be9fbd7990304b987b6dbd65570d7
   - enabled: 0
     path: Assets/levels/map_scene.unity
     guid: 2b91c5e37d3645db9c27e5f9d7df8e41
