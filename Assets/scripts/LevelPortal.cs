@@ -1,26 +1,28 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelPortal : MonoBehaviour
+public class SceneTransition : MonoBehaviour
 {
-    [Header("Beállítások")]
-    [SerializeField] private string targetSceneName; // A jelenet pontos neve a Build Settings-ben
-    [SerializeField] private int targetRoomID;      // Opcionális: ha a PlayerManager szoba-alapú rendszerét használod
+    [Header("A betöltendő jelenet pontos neve")]
+    public string nextSceneName;
 
+    // Ez a függvény automatikusan lefut, ha valami belép a trigger zónába
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ellenőrizzük, hogy a játékos ért-e hozzá
+        // Ellenőrizzük, hogy a játékos volt-e az (a Player taget használva)
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Átlépés a következő jelenetbe: " + targetSceneName);
+            Debug.Log("Játékos elérte a kijáratot. Jelenet betöltése: " + nextSceneName);
             
-            // Ha használod a PlayerManager-t a szobák követésére:
-            if (PlayerManager.Instance != null)
+            // Ha a név nincs megadva, ne fagyjon ki a játék
+            if (!string.IsNullOrWhiteSpace(nextSceneName))
             {
-                // Itt frissítheted a PlayerManager belső állapotát, mielőtt váltasz
+                SceneManager.LoadScene(nextSceneName);
             }
-
-            SceneManager.LoadScene(targetSceneName);
+            else
+            {
+                Debug.LogError("Nincs megadva a következő jelenet neve a " + gameObject.name + " objektumon!");
+            }
         }
     }
 }
