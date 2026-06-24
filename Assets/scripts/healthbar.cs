@@ -34,16 +34,8 @@ public class HealthBar : MonoBehaviour
             slider.value = currentHealth;
         }
 
-        // if the damaged object has a PlayerMovement, briefly disable movement
-        PlayerMovement pm = GetComponent<PlayerMovement>();
-        if (pm == null)
-        {
-            pm = GetComponentInParent<PlayerMovement>();
-        }
-        if (pm != null)
-        {
-            pm.DisableMovementForSeconds(1f); // 1 second stun
-        }
+        // KIVETTÜK a megállítást (stun logikát) innen!
+        // Így simán futhat tovább a karakter, ha sebzést kap.
 
         if (currentHealth <= 0)
         {
@@ -55,10 +47,22 @@ public class HealthBar : MonoBehaviour
     {
         Debug.Log("A karakter meghalt!");
 
+        // Megállítjuk az AutoWalkert (ha van rajta)
         AutoWalker walker = GetComponent<AutoWalker>();
         if (walker != null)
         {
             walker.StopWalking();
+        }
+
+        // Megállítjuk a normál játékos mozgást is a halál pillanatában
+        PlayerMovement pm = GetComponent<PlayerMovement>();
+        if (pm == null)
+        {
+            pm = GetComponentInParent<PlayerMovement>();
+        }
+        if (pm != null)
+        {
+            pm.enabled = false; // Teljesen letiltjuk a mozgásért felelős szkriptet
         }
 
         StartCoroutine(DieRoutine());
