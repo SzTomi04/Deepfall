@@ -1,28 +1,56 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem; // Ezt hozzáadtuk a New Input System miatt!
 
 public class SceneTransition : MonoBehaviour
 {
     [Header("A betöltendő jelenet pontos neve")]
     public string nextSceneName;
 
-    // Ez a függvény automatikusan lefut, ha valami belép a trigger zónába
-    private void OnTriggerEnter2D(Collider2D collision)
+    private bool isPlayerAtDoor = false;
+    private PlayerInventory playerInventory;
+
+    private void Update()
     {
-        // Ellenőrizzük, hogy a játékos volt-e az (a Player taget használva)
-        if (collision.CompareTag("Player"))
+        // ÚJ INPUT SYSTEM: Ellenőrizzük, hogy van-e billentyűzet, és megnyomták-e az E betűt
+        if (isPlayerAtDoor && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            Debug.Log("Játékos elérte a kijáratot. Jelenet betöltése: " + nextSceneName);
-            
-            // Ha a név nincs megadva, ne fagyjon ki a játék
-            if (!string.IsNullOrWhiteSpace(nextSceneName))
+            if (playerInventory != null && playerInventory.hasKey)
             {
-                SceneManager.LoadScene(nextSceneName);
+                Debug.Log("Kulcs behelyezve! Jelenet betöltése: " + nextSceneName);
+                
+                if (!string.IsNullOrWhiteSpace(nextSceneName))
+                {
+                    SceneManager.LoadScene(nextSceneName);
+                }
+                else
+                {
+                    Debug.LogError("Nincs megadva a következő jelenet neve a " + gameObject.name + " objektumon!");
+                }
             }
             else
             {
-                Debug.LogError("Nincs megadva a következő jelenet neve a " + gameObject.name + " objektumon!");
+                Debug.Log("Az ajtó zárva van! Keresd meg a kulcsot.");
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            isPlayerAtDoor = true;
+            playerInventory = collision.GetComponent<PlayerInventory>();
+            Debug.Log("Játékos az ajtónál. Nyomj 'E'-t a nyitáshoz!");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            isPlayerAtDoor = false;
+            playerInventory = null; 
         }
     }
 }

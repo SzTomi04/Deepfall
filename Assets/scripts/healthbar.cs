@@ -1,12 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement; // EZT HOZZÁADTUK A PÁLYAVÁLTÁSHOZ!
 
 public class HealthBar : MonoBehaviour
 {
     public Slider slider;
     public float maxHealth = 100f;
     [SerializeField] private float currentHealth;
+    
+    [Header("Halál utáni pálya")]
+    public string endSceneName = "end"; // Ide írd be Unity-ben az End Scene nevét!
+
     private Animator anim;
     private bool isinanim = false;
     [SerializeField] private GameObject healthBarUI;
@@ -34,9 +39,6 @@ public class HealthBar : MonoBehaviour
             slider.value = currentHealth;
         }
 
-        // KIVETTÜK a megállítást (stun logikát) innen!
-        // Így simán futhat tovább a karakter, ha sebzést kap.
-
         if (currentHealth <= 0)
         {
             Die();
@@ -47,14 +49,12 @@ public class HealthBar : MonoBehaviour
     {
         Debug.Log("A karakter meghalt!");
 
-        // Megállítjuk az AutoWalkert (ha van rajta)
         AutoWalker walker = GetComponent<AutoWalker>();
         if (walker != null)
         {
             walker.StopWalking();
         }
 
-        // Megállítjuk a normál játékos mozgást is a halál pillanatában
         PlayerMovement pm = GetComponent<PlayerMovement>();
         if (pm == null)
         {
@@ -62,7 +62,7 @@ public class HealthBar : MonoBehaviour
         }
         if (pm != null)
         {
-            pm.enabled = false; // Teljesen letiltjuk a mozgásért felelős szkriptet
+            pm.enabled = false; 
         }
 
         StartCoroutine(DieRoutine());
@@ -75,13 +75,22 @@ public class HealthBar : MonoBehaviour
             anim.SetTrigger("die");
             isinanim = true;
 
+            // Megvárjuk a halál animációt
             yield return new WaitForSeconds(5f);
-            gameObject.SetActive(false);
         }
 
         if (healthBarUI != null)
         {
             healthBarUI.SetActive(false);
         }
+
+        // PÁLYAVÁLTÁS AZ END SCENE-RE
+        if (!string.IsNullOrWhiteSpace(endSceneName))
+        {
+            SceneManager.LoadScene(endSceneName);
+        }
+
+        // Csak ezután kapcsoljuk ki a playert, különben leállna a Coroutine!
+        gameObject.SetActive(false); 
     }
 }
